@@ -212,15 +212,92 @@
     .chart-tick{display:none;}
   }
 
+  /* METODOLOGÍA DE ESTUDIO */
+  .method-section{padding:40px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
+    min-height:calc(100vh - 84px); display:flex; align-items:center; scroll-snap-align:start; scroll-margin-top:84px;}
+  .method-section::before{
+    content:''; position:absolute; inset:0;
+    background:repeating-linear-gradient(45deg, rgba(201,162,39,0.04) 0, rgba(201,162,39,0.04) 1px, transparent 1px, transparent 70px);
+  }
+  .method-head{max-width:680px; margin-bottom:32px;}
+  .method-head h2{font-size:clamp(24px,3.6vw,36px); margin-top:10px;}
+  .method-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;}
+  .method-card{
+    background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:22px;
+    display:flex; flex-direction:column;
+  }
+  .method-icon{
+    width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(201,162,39,0.5); background:rgba(201,162,39,0.12); color:var(--gold-2);
+    margin-bottom:12px;
+  }
+  .method-icon svg{width:18px; height:18px;}
+  .method-num{font-family:'League Spartan',sans-serif; font-weight:800; font-size:40px; line-height:1; display:block; margin-bottom:6px;}
+  .method-label{font-weight:600; font-size:14.5px; color:var(--cream); margin-bottom:4px; display:block;}
+  .method-desc{font-size:12.5px; color:var(--cream-dim); line-height:1.4;}
+  .method-split-bar{
+    display:flex; width:100%; height:10px; border-radius:6px; overflow:hidden; margin-bottom:14px;
+    border:1px solid var(--line);
+  }
+  .split-teoria{background:rgba(176,172,160,0.4);}
+  .split-practica{background:linear-gradient(90deg, var(--gold), var(--gold-2));}
+  .method-split-labels{display:flex; justify-content:space-between; font-size:12.5px; color:var(--cream-dim); margin-bottom:4px;}
+  .method-split-labels b{display:block; font-family:'League Spartan',sans-serif; font-weight:800; font-size:20px; color:var(--cream);}
+  .method-split-labels span:last-child b{color:var(--gold-2);}
+  @media (max-width:820px){ .method-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:560px){ .method-grid{grid-template-columns:1fr;} }
+
+  /* PLUS: ACOMPAÑAMIENTO */
+  .plus-section{padding:40px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
+    min-height:calc(100vh - 84px); display:flex; align-items:center; scroll-snap-align:start; scroll-margin-top:84px;}
+  .plus-section::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 650px 450px at 50% 0%, rgba(201,162,39,0.12), transparent 65%);
+  }
+  .plus-head{max-width:720px; margin:0 auto; text-align:center;}
+  .plus-head h2{font-size:clamp(24px,3.6vw,36px); margin-top:10px;}
+  .plus-quote{
+    font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600;
+    font-size:clamp(16px,2vw,20px); color:var(--gold-2); max-width:640px; margin:16px auto 0;
+  }
+  .plus-compare{
+    display:flex; align-items:center; justify-content:center; gap:28px;
+    max-width:820px; margin:34px auto 0;
+  }
+  .plus-col{
+    flex:1; max-width:320px; text-align:center; padding:22px 20px; border-radius:16px;
+    border:1px solid var(--line); background:var(--ink-2);
+  }
+  .plus-col.highlight{border-color:var(--gold); background:linear-gradient(180deg, rgba(201,162,39,0.1), var(--ink-2) 55%);}
+  .plus-col-label{display:block; font-size:12.5px; color:var(--cream-dim); margin-bottom:14px;}
+  .plus-col.highlight .plus-col-label{color:var(--gold-2); font-weight:600;}
+  .plus-icons{display:flex; flex-wrap:wrap; justify-content:center; gap:7px; margin-bottom:14px;}
+  .plus-icon{
+    width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line); color:var(--cream-dim);
+  }
+  .plus-icon svg{width:13px; height:13px;}
+  .plus-icon.on{border-color:rgba(201,162,39,0.5); background:rgba(201,162,39,0.14); color:var(--gold-2);}
+  .plus-col-num{font-family:'League Spartan',sans-serif; font-weight:800; font-size:48px; display:block; line-height:1;}
+  .plus-col-sub{display:block; font-size:12.5px; color:var(--cream-dim); margin-top:6px;}
+  .plus-vs{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--cream-dim);
+    letter-spacing:.08em; flex-shrink:0;
+  }
+  @media (max-width:720px){
+    .plus-compare{flex-direction:column; gap:14px;}
+    .plus-vs{transform:rotate(90deg);}
+  }
+
   /* TESTIMONIALS */
-  .testi-section{padding:60px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
+  .testi-section{padding:32px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
     min-height:calc(100vh - 84px); display:flex; align-items:center; scroll-snap-align:start; scroll-margin-top:84px;}
   .testi-section::before{
     content:'“';
     position:absolute; top:-60px; right:6%; font-family:'Cormorant Garamond',serif;
     font-size:420px; line-height:1; color:var(--gold); opacity:0.06; pointer-events:none;
   }
-  .testi-carousel{display:flex; align-items:center; gap:18px; margin-top:48px;}
+  .testi-carousel{display:flex; align-items:center; gap:18px; margin-top:24px;}
   .testi-viewport{overflow:hidden; flex:1; min-width:0;}
   .testi-track{display:flex; transition:transform .5s cubic-bezier(.16,1,.3,1);}
   .testi-slide{flex:0 0 100%; min-width:0; padding:0 3px;}
@@ -234,7 +311,7 @@
   .testi-arrow:hover{border-color:var(--gold); background:rgba(201,162,39,0.1);}
   @media (max-width:640px){ .testi-arrow{width:38px; height:38px;} .testi-arrow svg{width:16px; height:16px;} }
   .testi-card{
-    background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:32px;
+    background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:22px;
     cursor:pointer; transition:border-color .2s ease, transform .2s ease;
     max-width:460px; margin:0 auto;
   }
@@ -249,6 +326,17 @@
   .testi-name{font-weight:600; font-size:15px;}
   .testi-role{font-size:12px; color:var(--cream-dim);}
   .testi-card p{color:var(--cream-dim); font-size:14.5px;}
+  .testi-video{
+    position:relative; width:100%; max-width:160px; margin:0 auto 12px; border-radius:12px;
+    overflow:hidden; border:1px solid var(--line); cursor:pointer; background:#000;
+  }
+  .testi-video video{width:100%; display:block;}
+  .video-play-icon{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    pointer-events:none; background:rgba(0,0,0,0.28); transition:opacity .2s ease;
+  }
+  .video-play-icon svg{width:36px; height:36px; color:#fff; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
+  .testi-video.playing .video-play-icon{opacity:0;}
   .testi-card .tag{
     display:inline-block; margin-top:16px; font-family:'IBM Plex Mono',monospace;
     font-size:12px; color:var(--green-2); border:1px solid var(--green); border-radius:20px;
@@ -256,29 +344,29 @@
   }
 
   /* PLANS */
-  .plans-section{padding:26px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
+  .plans-section{padding:14px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
     min-height:calc(100vh - 84px); display:flex; align-items:center; scroll-snap-align:start; scroll-margin-top:84px;}
   .plans-section::before{
     content:''; position:absolute; inset:0;
     background:conic-gradient(from 200deg at 90% 10%, rgba(201,162,39,0.16), transparent 30%);
   }
-  .plans-grid{display:flex; justify-content:center; margin-top:18px;}
+  .plans-grid{display:flex; justify-content:center; margin-top:10px;}
   .plan-card{
-    background:var(--ink-2); border:1px solid var(--line); border-radius:16px; padding:22px 32px;
+    background:var(--ink-2); border:1px solid var(--line); border-radius:16px; padding:16px 28px;
     display:flex; flex-direction:column; max-width:680px; width:100%;
   }
   .plan-card.highlight{border-color:var(--gold); background:linear-gradient(180deg, rgba(201,162,39,0.08), var(--ink-2) 45%);}
   .plan-badge{
-    align-self:center; font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase;
-    letter-spacing:.1em; color:var(--gold-2); background:rgba(201,162,39,0.12); padding:5px 14px; border-radius:20px; margin-bottom:14px;
+    align-self:center; font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.1em; color:var(--gold-2); background:rgba(201,162,39,0.12); padding:4px 12px; border-radius:20px; margin-bottom:8px;
   }
 
   /* Selector de moneda */
-  .currency-toggle{display:flex; justify-content:center; gap:8px; margin-bottom:10px;}
+  .currency-toggle{display:flex; justify-content:center; gap:8px; margin-bottom:6px;}
   .currency-btn{
     display:flex; align-items:center; gap:6px; border:1px solid var(--line); background:transparent;
-    color:var(--cream-dim); font-family:'Inter',sans-serif; font-weight:600; font-size:12.5px;
-    padding:6px 14px; border-radius:20px; cursor:pointer; transition:all .2s ease;
+    color:var(--cream-dim); font-family:'Inter',sans-serif; font-weight:600; font-size:12px;
+    padding:5px 13px; border-radius:20px; cursor:pointer; transition:all .2s ease;
   }
   .currency-btn span{pointer-events:none;}
   .currency-btn.active{border-color:var(--gold); color:var(--gold-2); background:rgba(201,162,39,0.1);}
@@ -287,19 +375,19 @@
   .price-block{display:none;}
   .price-block.cur-active{display:block;}
   .original-price{
-    align-self:center; font-family:'Inter',sans-serif; font-size:16px; color:var(--cream-dim);
+    text-align:center; font-family:'Inter',sans-serif; font-size:14px; color:var(--cream-dim);
     text-decoration:line-through; text-decoration-color:rgba(176,172,160,0.6); margin-bottom:0;
   }
-  .plan-price{font-family:'League Spartan',sans-serif; font-size:80px; font-weight:800; line-height:1; margin-bottom:4px; display:block; text-align:center;
-    filter:drop-shadow(0 0 20px rgba(201,162,39,0.55)) drop-shadow(0 0 40px rgba(232,199,97,0.3));}
+  .plan-price{font-family:'League Spartan',sans-serif; font-size:60px; font-weight:800; line-height:1; margin-bottom:2px; display:block; text-align:center;
+    filter:drop-shadow(0 0 16px rgba(201,162,39,0.55)) drop-shadow(0 0 32px rgba(232,199,97,0.3));}
   .price-shine-anim{
     background:linear-gradient(100deg, #7a5c14 0%, #f6dfa0 22%, #c9a227 42%, #fff6de 55%, #c9a227 68%, #7a5c14 100%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .plan-note{font-size:13px; color:var(--cream-dim); margin-bottom:16px; text-align:center;}
-  .payment-options{display:flex; gap:12px; margin-bottom:12px;}
+  .plan-note{font-size:12px; color:var(--cream-dim); margin-bottom:8px; text-align:center;}
+  .payment-options{display:flex; gap:10px; margin-bottom:8px;}
   .payment-option{
-    flex:1; text-align:center; border:1px solid var(--line); border-radius:10px; padding:10px 10px;
+    flex:1; text-align:center; border:1px solid var(--line); border-radius:10px; padding:7px 8px;
     text-decoration:none; display:block; position:relative;
     transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
   }
@@ -307,31 +395,31 @@
     border-color:var(--gold); background:rgba(201,162,39,0.08);
     box-shadow:0 10px 26px rgba(201,162,39,0.18);
   }
-  .payment-option .po-label{display:block; font-size:11.5px; color:var(--cream-dim); margin-bottom:4px;}
-  .payment-option .po-value{font-family:'League Spartan',sans-serif; font-weight:800; font-size:19px; color:var(--gold-2);}
-  .payment-option .po-schedule{display:block; font-size:10px; color:var(--cream-dim); opacity:0.75; margin-top:4px;}
+  .payment-option .po-label{display:block; font-size:11px; color:var(--cream-dim); margin-bottom:2px;}
+  .payment-option .po-value{font-family:'League Spartan',sans-serif; font-weight:800; font-size:17px; color:var(--gold-2);}
+  .payment-option .po-schedule{display:block; font-size:9.5px; color:var(--cream-dim); opacity:0.75; margin-top:2px;}
   .payment-option .po-cta{
-    display:block; font-size:10px; color:var(--cream-dim); margin-top:3px;
+    display:block; font-size:9.5px; color:var(--cream-dim); margin-top:2px;
     opacity:0; transform:translateY(-3px); transition:opacity .2s ease, transform .2s ease;
   }
   .payment-option:hover .po-cta, .payment-option.hover-sim .po-cta{opacity:1; transform:none;}
-  .plan-list{list-style:none; margin-bottom:16px; flex:1;}
-  .plan-list li{display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; font-size:13.5px; color:var(--cream-dim); margin-bottom:7px; white-space:nowrap;}
+  .plan-list{list-style:none; margin-bottom:8px; flex:1;}
+  .plan-list li{display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; font-size:12.5px; color:var(--cream-dim); margin-bottom:4px; white-space:nowrap;}
   .plan-list li::before{content:'✓'; color:var(--green-2); font-weight:700; flex-shrink:0;}
   .plan-list li.highlight-item{
     white-space:normal; align-items:center;
     border:1px solid rgba(201,162,39,0.45); background:rgba(201,162,39,0.08);
-    border-radius:10px; padding:7px 12px; margin-bottom:7px;
+    border-radius:10px; padding:5px 10px; margin-bottom:4px;
   }
   .plan-list li.highlight-item::before{color:var(--gold-2);}
   .highlight-fire{
-    font-size:11px; font-weight:600; color:var(--gold-2);
+    font-size:10px; font-weight:600; color:var(--gold-2);
     background:rgba(201,162,39,0.18); border:1px solid rgba(201,162,39,0.4);
-    padding:2px 9px; border-radius:20px; white-space:nowrap;
+    padding:2px 8px; border-radius:20px; white-space:nowrap;
   }
-  .plan-card .btn{align-self:center; padding:12px 36px;}
-  .plan-terms{margin-bottom:10px;}
-  .plan-terms p{font-size:10.5px; line-height:1.4; color:var(--cream-dim); opacity:0.8; margin-bottom:4px; text-align:center;}
+  .plan-card .btn{align-self:center; padding:9px 30px; font-size:13px;}
+  .plan-terms{margin-bottom:6px;}
+  .plan-terms p{font-size:9.5px; line-height:1.3; color:var(--cream-dim); opacity:0.8; margin-bottom:3px; text-align:center;}
 
   @media (max-width:520px){
     .payment-options{flex-direction:column;}
@@ -468,6 +556,94 @@
   </div>
 </section>
 
+<section class="method-section" id="metodologia">
+  <div class="wrap">
+    <span class="eyebrow">Metodología de estudio</span>
+    <h2 class="method-head-h2" style="margin-top:10px; font-size:clamp(24px,3.6vw,36px);">Un entrenamiento diseñado para que practiques desde el primer día.</h2>
+    <div class="method-grid" style="margin-top:28px;">
+      <div class="method-card">
+        <span class="method-num gold-shine">5</span>
+        <span class="method-label">Semanas</span>
+        <span class="method-desc">Duración total del entrenamiento</span>
+      </div>
+      <div class="method-card">
+        <span class="method-num gold-shine">3</span>
+        <span class="method-label">Clases semanales</span>
+        <span class="method-desc">Sesiones de 1h a 1h:30</span>
+      </div>
+      <div class="method-card">
+        <span class="method-num gold-shine">15</span>
+        <span class="method-label">Módulos</span>
+        <span class="method-desc">De 0 a 100</span>
+      </div>
+      <div class="method-card">
+        <div class="method-split-bar">
+          <span class="split-teoria" style="width:20%"></span>
+          <span class="split-practica" style="width:80%"></span>
+        </div>
+        <div class="method-split-labels">
+          <span><b>20%</b>Teoría</span>
+          <span><b>80%</b>Práctica aplicada</span>
+        </div>
+        <span class="method-desc">Práctica intensiva</span>
+      </div>
+      <div class="method-card">
+        <span class="method-num gold-shine">100%</span>
+        <span class="method-label">En vivo y en directo</span>
+        <span class="method-desc">Nada pregrabado, todo interactivo</span>
+      </div>
+      <div class="method-card">
+        <span class="method-num gold-shine">2</span>
+        <span class="method-label">Mentorías 1 a 1</span>
+        <span class="method-desc">Dentro del entrenamiento grupal</span>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+        </div>
+        <span class="method-label">Scripts de práctica</span>
+        <span class="method-desc">Herramientas listas para usar en llamada</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plus-section" id="plus">
+  <div class="wrap plus-head">
+    <span class="eyebrow">El plus que te llevas</span>
+    <h2>1 mes de acompañamiento con revisión de llamadas reales.</h2>
+    <p class="plus-quote">“Se aprende en la práctica; la teoría solo sirve para dar contexto.”</p>
+
+    <div class="plus-compare">
+      <div class="plus-col">
+        <span class="plus-col-label">Closer promedio en el mercado</span>
+        <div class="plus-icons">
+          <span class="plus-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <span class="plus-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+        </div>
+        <span class="plus-col-num">1–2</span>
+        <span class="plus-col-sub">revisiones de llamada al mes</span>
+      </div>
+
+      <span class="plus-vs">VS</span>
+
+      <div class="plus-col highlight">
+        <span class="plus-col-label">Con Metodología Assensus</span>
+        <div class="plus-icons">
+          <span class="plus-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <span class="plus-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <span class="plus-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <span class="plus-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <span class="plus-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+          <span class="plus-icon on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span>
+        </div>
+        <span class="plus-col-num gold-shine">4–6</span>
+        <span class="plus-col-sub">revisiones al mes, según lo necesite tu progreso</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="testi-section" id="casos">
   <div class="wrap">
     <span class="eyebrow">Casos reales</span>
@@ -485,6 +661,14 @@
           <div>
             <div class="testi-name">Duvan Libreros</div>
             <div class="testi-role">Ex-operario en Tecnoquímicas, Cali</div>
+          </div>
+        </div>
+        <div class="testi-video" id="duvan-video-wrap">
+          <video id="duvan-video" playsinline preload="metadata" poster="duvan-poster.jpg">
+            <source src="duvan-testimonio.mp4" type="video/mp4">
+          </video>
+          <div class="video-play-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
         <p>Sin experiencia previa en ventas, hoy trabaja en la industria high ticket facturando entre $2.000 y $3.000 dólares mensuales, desde su casa.</p>
@@ -516,7 +700,7 @@
 <section class="plans-section" id="planes">
   <div class="wrap">
     <span class="eyebrow">Inversión</span>
-    <h2 style="margin-top:8px; font-size:clamp(24px,3.4vw,34px);">Empieza tu formación hoy.</h2>
+    <h2 style="margin-top:6px; font-size:clamp(22px,3vw,30px);">Empieza tu formación hoy.</h2>
     <div class="plans-grid">
       <div class="plan-card highlight" id="plan-card">
         <span class="plan-badge">Oferta por tiempo limitado</span>
@@ -634,6 +818,15 @@
     });
   }
 
+  // Video de testimonio: sincronizar el ícono de play con el estado real
+  const duvanVideo = document.getElementById('duvan-video');
+  const duvanVideoWrap = document.getElementById('duvan-video-wrap');
+  if(duvanVideo && duvanVideoWrap){
+    duvanVideo.addEventListener('play', ()=> duvanVideoWrap.classList.add('playing'));
+    duvanVideo.addEventListener('pause', ()=> duvanVideoWrap.classList.remove('playing'));
+    duvanVideo.addEventListener('ended', ()=> duvanVideoWrap.classList.remove('playing'));
+  }
+
   // Selector de moneda USD / COP
   const currencyBtns = document.querySelectorAll('.currency-btn');
   currencyBtns.forEach(btn=>{
@@ -651,6 +844,8 @@
     document.querySelector('header.hero'),
     document.getElementById('quienes-somos'),
     document.getElementById('salarios'),
+    document.getElementById('metodologia'),
+    document.getElementById('plus'),
     document.getElementById('casos'),
     document.getElementById('planes'),
     document.querySelector('.final-cta')
@@ -719,7 +914,7 @@
     canvas.style.pointerEvents = 'none';
     const el = document.elementFromPoint(x, y);
     canvas.style.pointerEvents = 'auto';
-    const target = el ? el.closest('button, a[href]') : null;
+    const target = el ? el.closest('button, a[href], video, .testi-video') : null;
     if(target !== hoverTarget){
       if(hoverTarget) hoverTarget.classList.remove('hover-sim');
       if(target) target.classList.add('hover-sim');
@@ -752,10 +947,16 @@
       canvas.style.pointerEvents = 'none';
       const el = document.elementFromPoint(p.x, p.y);
       canvas.style.pointerEvents = 'auto';
-      const clickable = el ? el.closest('button, a[href]') : null;
+      const clickable = el ? el.closest('button, a[href], video, .testi-video') : null;
       if(clickable){
-        if(typeof clickable.click === 'function') clickable.click();
-        else clickable.dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
+        const videoEl = clickable.tagName === 'VIDEO' ? clickable : clickable.querySelector('video');
+        if(videoEl){
+          if(videoEl.paused) videoEl.play(); else videoEl.pause();
+        } else if(typeof clickable.click === 'function'){
+          clickable.click();
+        } else {
+          clickable.dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
+        }
       }
     }
     currentStroke = null;
