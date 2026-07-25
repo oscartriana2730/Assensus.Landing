@@ -472,6 +472,7 @@
     position:relative; width:100%; max-width:260px; margin:0 auto 8px; border-radius:12px;
     overflow:hidden; border:1px solid var(--line); cursor:pointer; background:#000;
   }
+  .testi-video.landscape{max-width:400px;}
   .testi-video video{width:100%; display:block;}
   .video-play-icon{
     position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
@@ -479,6 +480,38 @@
   }
   .video-play-icon svg{width:36px; height:36px; color:#fff; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
   .testi-video.playing .video-play-icon{opacity:0;}
+
+  /* Lightbox: el video se agranda y el resto de la pantalla se oscurece */
+  .video-lightbox{
+    position:fixed; inset:0; z-index:200; display:none;
+    align-items:center; justify-content:center; padding:40px;
+  }
+  .video-lightbox.open{display:flex;}
+  .video-lightbox-backdrop{
+    position:absolute; inset:0; background:rgba(3,2,1,0.94);
+    backdrop-filter:blur(4px); opacity:0; transition:opacity .3s ease;
+  }
+  .video-lightbox.open .video-lightbox-backdrop{opacity:1;}
+  .video-lightbox-content{
+    position:relative; z-index:1; max-width:min(90vw, 720px); max-height:88vh;
+    transform:scale(.94); opacity:0; transition:transform .3s cubic-bezier(.16,1,.3,1), opacity .3s ease;
+  }
+  .video-lightbox.open .video-lightbox-content{transform:scale(1); opacity:1;}
+  #lightbox-video{
+    display:block; max-width:min(90vw, 720px); max-height:88vh; width:auto; height:auto;
+    border-radius:14px; border:1px solid rgba(201,162,39,0.4);
+    box-shadow:0 50px 120px rgba(0,0,0,0.75), 0 0 0 1px rgba(0,0,0,0.3);
+  }
+  .video-lightbox-close{
+    position:absolute; top:-46px; right:0; width:36px; height:36px; border-radius:50%;
+    background:rgba(17,16,13,0.9); border:1px solid rgba(201,162,39,0.4); color:var(--gold-2);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:border-color .2s ease, transform .2s ease, background .2s ease;
+  }
+  .video-lightbox-close svg{width:16px; height:16px;}
+  .video-lightbox-close:hover{border-color:var(--gold); background:rgba(201,162,39,0.15); transform:rotate(90deg);}
+  @media (max-width:640px){ .video-lightbox-close{top:-42px; right:0;} }
+
   .testi-card .tag{
     display:inline-block; margin-top:8px; font-family:'IBM Plex Mono',monospace;
     font-size:11.5px; color:var(--green-2); border:1px solid var(--green); border-radius:20px;
@@ -1090,7 +1123,7 @@
             <div class="testi-role">Closer high ticket</div>
           </div>
         </div>
-        <div class="testi-video" id="yulie-video-wrap">
+        <div class="testi-video landscape" id="yulie-video-wrap">
           <video id="yulie-video" playsinline preload="metadata" poster="yulie-poster.jpg">
             <source src="yulie-testimonio.mp4" type="video/mp4">
           </video>
@@ -1186,6 +1219,16 @@
 
 <canvas id="draw-canvas"></canvas>
 
+<div class="video-lightbox" id="video-lightbox">
+  <div class="video-lightbox-backdrop"></div>
+  <div class="video-lightbox-content">
+    <button type="button" class="video-lightbox-close" id="video-lightbox-close" aria-label="Cerrar video">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <video id="lightbox-video" controls playsinline></video>
+  </div>
+</div>
+
 <script>
   // Scroll-reveal for sections and the salary chart
   const revealTargets = document.querySelectorAll('section, header.hero');
@@ -1245,6 +1288,38 @@
     yulieVideo.addEventListener('pause', ()=> yulieVideoWrap.classList.remove('playing'));
     yulieVideo.addEventListener('ended', ()=> yulieVideoWrap.classList.remove('playing'));
   }
+
+  // Lightbox: agranda el video con el resto de la pantalla oscurecida
+  const videoLightbox = document.getElementById('video-lightbox');
+  const lightboxVideo = document.getElementById('lightbox-video');
+  const lightboxCloseBtn = document.getElementById('video-lightbox-close');
+  const lightboxBackdrop = videoLightbox ? videoLightbox.querySelector('.video-lightbox-backdrop') : null;
+
+  window.openVideoLightbox = function(sourceVideoEl){
+    if(!videoLightbox || !lightboxVideo) return;
+    sourceVideoEl.pause();
+    const sourceEl = sourceVideoEl.querySelector('source');
+    lightboxVideo.src = sourceEl ? sourceEl.src : sourceVideoEl.currentSrc;
+    lightboxVideo.poster = sourceVideoEl.poster || '';
+    videoLightbox.classList.add('open');
+    document.getElementById('draw-canvas').style.pointerEvents = 'none';
+    lightboxVideo.currentTime = 0;
+    lightboxVideo.play().catch(()=>{});
+  };
+
+  function closeVideoLightbox(){
+    if(!videoLightbox || !lightboxVideo) return;
+    lightboxVideo.pause();
+    videoLightbox.classList.remove('open');
+    document.getElementById('draw-canvas').style.pointerEvents = 'auto';
+    setTimeout(()=>{ lightboxVideo.removeAttribute('src'); lightboxVideo.load(); }, 300);
+  }
+
+  if(lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeVideoLightbox);
+  if(lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeVideoLightbox);
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && videoLightbox && videoLightbox.classList.contains('open')) closeVideoLightbox();
+  });
 
   // Selector de moneda USD / COP
   const currencyBtns = document.querySelectorAll('.currency-btn');
@@ -1327,6 +1402,8 @@
     if(e.metaKey || e.ctrlKey || e.altKey) return;
     const tag = document.activeElement ? document.activeElement.tagName : '';
     if(tag === 'INPUT' || tag === 'TEXTAREA') return;
+    const lightboxEl = document.getElementById('video-lightbox');
+    if(lightboxEl && lightboxEl.classList.contains('open')) return;
 
     if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){
       e.preventDefault();
@@ -1416,7 +1493,7 @@
       if(clickable){
         const videoEl = clickable.tagName === 'VIDEO' ? clickable : clickable.querySelector('video');
         if(videoEl){
-          if(videoEl.paused) videoEl.play(); else videoEl.pause();
+          openVideoLightbox(videoEl);
         } else if(typeof clickable.click === 'function'){
           clickable.click();
         } else {
