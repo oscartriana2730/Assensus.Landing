@@ -22,6 +22,7 @@
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth; scroll-snap-type:y proximity;}
+  html.no-snap{scroll-snap-type:none;}
   body{
     background:var(--ink);
     color:var(--cream);
@@ -661,10 +662,10 @@
   <div class="wrap">
     <div class="logo"><span class="nav-tagline gold-shine">El mercado premia resultados, no excusas.</span></div>
     <div class="nav-links">
-      <a href="javascript:void(0)" onclick="document.getElementById('metodologia').scrollIntoView({behavior:'smooth'}); return false;">Programa</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('quienes-somos').scrollIntoView({behavior:'smooth'}); return false;">Metodología</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('casos').scrollIntoView({behavior:'smooth'}); return false;">Resultados</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('planes').scrollIntoView({behavior:'smooth'}); return false;">Planes</a>
+      <a href="javascript:void(0)" onclick="smoothScrollToSlide(document.getElementById('metodologia')); return false;">Programa</a>
+      <a href="javascript:void(0)" onclick="smoothScrollToSlide(document.getElementById('quienes-somos')); return false;">Metodología</a>
+      <a href="javascript:void(0)" onclick="smoothScrollToSlide(document.getElementById('casos')); return false;">Resultados</a>
+      <a href="javascript:void(0)" onclick="smoothScrollToSlide(document.getElementById('planes')); return false;">Planes</a>
     </div>
   </div>
 </nav>
@@ -677,7 +678,7 @@
       <h1 class="hero-fade" style="transition-delay:.25s;">Aprende la habilidad que te libera del salario tradicional y te da <em class="gold-shine">resultados, libertad y crecimiento personal.</em></h1>
       <p class="sub hero-fade" style="transition-delay:.45s;">Convirtiéndote en closer high ticket para cerrar negocios de alto valor.</p>
       <div class="hero-ctas hero-fade" style="transition-delay:.65s;">
-        <button class="btn btn-primary" onclick="document.getElementById('quienes-somos').scrollIntoView({behavior:'smooth'})">
+        <button class="btn btn-primary" onclick="smoothScrollToSlide(document.getElementById('quienes-somos'))">
           Quiero convertirme en closer
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
@@ -1211,7 +1212,7 @@
   <div class="wrap">
     <span class="eyebrow">Siguiente paso</span>
     <h2>¿Listo para vivir de tus comisiones en dólares?</h2>
-    <button class="btn btn-primary" onclick="document.getElementById('planes').scrollIntoView({behavior:'smooth'})">Reservar mi cupo</button>
+    <button class="btn btn-primary" onclick="smoothScrollToSlide(document.getElementById('planes'))">Reservar mi cupo</button>
   </div>
 </section>
 
@@ -1333,6 +1334,17 @@
     });
   });
 
+  // Scroll suave reutilizable: desactiva el scroll-snap durante el desplazamiento para que no haga "saltito" al llegar
+  window.smoothScrollToSlide = function(target){
+    if(!target) return;
+    document.documentElement.classList.add('no-snap');
+    target.scrollIntoView({behavior:'smooth'});
+    clearTimeout(window._snapRestoreTimeout);
+    window._snapRestoreTimeout = setTimeout(()=>{
+      document.documentElement.classList.remove('no-snap');
+    }, 700);
+  };
+
   // Nav: transparente arriba, sólido al hacer scroll
   const mainNav = document.getElementById('main-nav');
   function updateNavBg(){
@@ -1408,11 +1420,11 @@
     if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){
       e.preventDefault();
       const next = slides[Math.min(closestSlideIndex() + 1, slides.length - 1)];
-      next.scrollIntoView({behavior:'smooth'});
+      smoothScrollToSlide(next);
     } else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){
       e.preventDefault();
       const prev = slides[Math.max(closestSlideIndex() - 1, 0)];
-      prev.scrollIntoView({behavior:'smooth'});
+      smoothScrollToSlide(prev);
     }
   });
 
