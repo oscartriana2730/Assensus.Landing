@@ -159,91 +159,51 @@
   .btn-primary:hover{transform:translateY(-1px); box-shadow:0 8px 24px rgba(201,162,39,0.35);}
   .btn-ghost{background:transparent; color:var(--cream); border:1px solid var(--line);}
 
-  /* HERO */
-  header.hero{padding:26px 0 18px; position:relative; overflow:hidden; background:var(--premium-gradient);
-    min-height:calc(100vh - 84px); display:flex; align-items:center; scroll-snap-align:start; scroll-margin-top:84px;}
-  header.hero::before{
+  /* VSL — primera pantalla tipo "landing de video" */
+  .vsl-section{
+    position:relative; overflow:hidden; background:var(--premium-gradient);
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    scroll-snap-align:start; padding:60px 0;
+  }
+  .vsl-section::before{
     content:''; position:absolute; inset:0;
     background:
-      radial-gradient(ellipse 800px 500px at 82% -10%, rgba(201,162,39,0.16), transparent 60%),
-      radial-gradient(ellipse 500px 400px at -5% 110%, rgba(201,162,39,0.08), transparent 60%);
+      radial-gradient(ellipse 800px 500px at 50% -10%, rgba(201,162,39,0.18), transparent 60%),
+      radial-gradient(ellipse 600px 450px at 50% 110%, rgba(201,162,39,0.1), transparent 60%);
   }
-  header.hero .wrap{position:relative; z-index:2; max-width:1180px;}
-  .hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:center;}
-
-  /* Visual derecho: flecha de crecimiento como protagonista */
-  .hero-visual{position:relative; min-height:320px; display:flex; align-items:center; justify-content:center;}
-  .hero-graph-svg-big{width:100%; height:100%; max-height:380px; overflow:visible;}
-
-  .graph-path{
-    stroke-dasharray:1400; stroke-dashoffset:1400;
-    transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1) .5s;
-    filter:drop-shadow(0 0 6px rgba(201,162,39,0.35));
+  .vsl-inner{
+    position:relative; z-index:2; max-width:560px; margin:0 auto; padding:0 24px;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
   }
-  header.hero.in .graph-path{stroke-dashoffset:0;}
-  .graph-dot{opacity:0; transition:opacity .4s ease;}
-  header.hero.in .graph-dot{opacity:1;}
-  .graph-dot-big{filter:drop-shadow(0 0 5px rgba(232,199,97,0.6));}
-  .graph-dot-glow{filter:drop-shadow(0 0 14px rgba(255,248,230,0.9)) drop-shadow(0 0 28px rgba(232,199,97,0.6));}
-  .arrow-head{opacity:0; transition:opacity .4s ease;}
-  header.hero.in .arrow-head{opacity:1;}
-  .graph-arrow-glow{opacity:0; animation:arrowGlowPulse 2.4s ease-in-out .1s infinite;}
-
-  @keyframes arrowGlowPulse{
-    0%,100%{opacity:0.55;}
-    50%{opacity:1;}
+  .vsl-headline{
+    font-size:clamp(24px,3.4vw,36px); font-weight:800; line-height:1.2;
+    margin:14px 0 26px;
   }
-
-  @media (max-width:980px){
-    .hero-grid{grid-template-columns:1fr;}
-    .hero-visual{order:-1; margin-bottom:10px; min-height:280px;}
+  .vsl-headline em{font-style:normal;}
+  .vsl-video-frame{
+    position:relative; width:100%; max-width:360px; border-radius:18px;
+    overflow:hidden; cursor:pointer; background:#000;
+    border:1px solid rgba(201,162,39,0.35);
+    box-shadow:0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.3);
   }
-  @media (prefers-reduced-motion: reduce){
-    .graph-path, .graph-dot, .arrow-head, .graph-arrow-glow{
-      transition:none !important; animation:none !important; opacity:1 !important; stroke-dashoffset:0 !important;
-    }
+  .vsl-video-frame video{width:100%; display:block;}
+  .vsl-scroll-hint{
+    margin-top:28px; display:flex; flex-direction:column; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--cream-dim);
+    letter-spacing:0.04em; text-transform:uppercase;
+    animation:vslBounce 2.2s ease-in-out infinite;
   }
-
-    .hero h1{
-    font-size:clamp(26px,3.1vw,40px);
-    font-weight:800; margin:14px 0 14px;
-    max-width:640px; line-height:1.14;
+  .vsl-scroll-hint svg{width:16px; height:16px; color:var(--gold-2);}
+  @keyframes vslBounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
   }
-  .hero h1 em{font-style:normal;}
-  .hero p.sub{font-size:15.5px; color:var(--cream-dim); max-width:520px; margin-bottom:20px; line-height:1.5;}
-  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
-  .hero-ctas .btn-primary{display:inline-flex; align-items:center; gap:10px;}
-
-  /* Fila de confianza con íconos, debajo de ambas columnas */
-  .hero-trust-row{
-    grid-column:1 / -1; display:flex; align-items:center;
-    margin-top:20px; padding-top:16px; border-top:1px solid var(--line);
-  }
-  .htr-item{display:flex; align-items:center; gap:11px; flex:1; padding:0 22px;}
-  .htr-item:first-child{padding-left:0;}
-  .htr-item:not(:first-child){border-left:1px solid var(--line);}
-  .htr-item.htr-item-stars{align-items:flex-start;}
-  .htr-icon{flex-shrink:0; color:var(--gold-2); display:flex; align-items:center; justify-content:center;}
-  .htr-icon svg{width:24px; height:24px;}
-  .htr-text{display:flex; flex-direction:column;}
-  .htr-text b{display:block; font-size:12.5px; color:var(--cream); font-weight:700; line-height:1.3;}
-  .htr-text span{font-size:11px; color:var(--cream-dim);}
-  .htr-text span.htr-stars{color:var(--gold-2); font-size:12px; letter-spacing:1px; margin-bottom:2px; display:block;}
-
-  .hero-bottom-tag{grid-column:1/-1; text-align:center; margin-top:14px; font-size:12.5px; color:var(--cream-dim);}
-
-  @media (max-width:760px){
-    .hero-trust-row{flex-wrap:wrap; row-gap:20px;}
-    .htr-item{flex:1 1 45%; border-left:none !important; padding:0 10px !important;}
-  }
-
-  .hero-fade{
+  .vsl-fade{
     opacity:0; transform:translateY(18px);
     transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
   }
-  header.hero.in .hero-fade{opacity:1; transform:none;}
-  @media (prefers-reduced-motion: reduce){ .hero-fade{transition:none; opacity:1; transform:none;} }
-
+  .vsl-section.in .vsl-fade{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: reduce){ .vsl-fade{transition:none; opacity:1; transform:none;} }
 
   /* QUIÉNES SOMOS */
   .about-section{padding:20px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
@@ -465,6 +425,7 @@
   }
   .video-play-icon svg{width:36px; height:36px; color:#fff; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.5));}
   .testi-video.playing .video-play-icon{opacity:0;}
+  .vsl-video-frame.playing .video-play-icon{opacity:0;}
 
   /* PLANS */
   .plans-section{padding:14px 0; border-top:1px solid var(--line); position:relative; overflow:hidden; background:var(--premium-gradient);
@@ -596,6 +557,26 @@
 </head>
 <body>
 
+<section class="vsl-section" id="vsl">
+  <div class="gold-particles"></div>
+  <div class="vsl-inner">
+    <span class="eyebrow vsl-fade" style="transition-delay:.1s;">Antes de continuar</span>
+    <h1 class="vsl-headline vsl-fade" style="transition-delay:.25s;">Mira este video antes de <em class="gold-shine">tomar tu decisión.</em></h1>
+    <div class="vsl-video-frame vsl-fade" id="vsl-video-wrap" style="transition-delay:.45s;">
+      <video id="vsl-video" playsinline preload="metadata" poster="vsl-poster.jpg">
+        <source src="vsl-video.mp4" type="video/mp4">
+      </video>
+      <div class="video-play-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="vsl-scroll-hint vsl-fade" style="transition-delay:.65s;">
+      <span>Desliza al terminar</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </div>
+</section>
+
 <nav id="main-nav">
   <div class="wrap">
     <div class="logo"><span class="nav-tagline gold-shine">El mercado premia resultados, no excusas.</span></div>
@@ -607,98 +588,6 @@
     </div>
   </div>
 </nav>
-
-<header class="hero">
-  <div class="gold-particles"></div>
-  <div class="wrap hero-grid">
-    <div class="hero-content">
-      <span class="eyebrow hero-fade" style="transition-delay:.1s;">Entrenamiento para closers high ticket</span>
-      <h1 class="hero-fade" style="transition-delay:.25s;">Aprende la habilidad que te libera del salario tradicional y te da <em class="gold-shine">resultados, libertad y crecimiento personal.</em></h1>
-      <p class="sub hero-fade" style="transition-delay:.45s;">Convirtiéndote en closer high ticket para cerrar negocios de alto valor.</p>
-      <div class="hero-ctas hero-fade" style="transition-delay:.65s;">
-        <button class="btn btn-primary" onclick="smoothScrollToSlide(document.getElementById('quienes-somos'))">
-          Quiero convertirme en closer
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="hero-visual">
-      <svg class="hero-graph-svg-big" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <filter id="glowFilter" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="6" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-          <linearGradient id="graphLine" x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0%" stop-color="#9c6f0d"/>
-            <stop offset="55%" stop-color="#E8C761"/>
-            <stop offset="100%" stop-color="#fff2c9"/>
-          </linearGradient>
-        </defs>
-
-        <line x1="60" y1="60" x2="60" y2="440" stroke="#C9A227" stroke-width="1" opacity="0.08"/>
-        <line x1="220" y1="60" x2="220" y2="440" stroke="#C9A227" stroke-width="1" opacity="0.08"/>
-        <line x1="380" y1="60" x2="380" y2="440" stroke="#C9A227" stroke-width="1" opacity="0.08"/>
-        <line x1="540" y1="60" x2="540" y2="440" stroke="#C9A227" stroke-width="1" opacity="0.08"/>
-
-        <polyline class="graph-path" points="20,410 90,385 120,402 165,368 195,385 225,368 250,352 300,308 330,325 355,316 378,328 405,300 440,258 470,228 505,168 535,122 565,68"
-          fill="none" stroke="url(#graphLine)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-        <circle class="graph-dot" cx="20" cy="410" r="3.5" fill="#E8C761" style="transition-delay:.9s;"/>
-        <circle class="graph-dot" cx="120" cy="402" r="4" fill="#E8C761" style="transition-delay:1.05s;"/>
-        <circle class="graph-dot graph-dot-big" cx="195" cy="385" r="7" fill="#fff2c9" style="transition-delay:1.15s;"/>
-        <circle class="graph-dot" cx="250" cy="352" r="4" fill="#E8C761" style="transition-delay:1.3s;"/>
-        <circle class="graph-dot graph-dot-big" cx="330" cy="325" r="7" fill="#fff2c9" style="transition-delay:1.4s;"/>
-        <circle class="graph-dot" cx="378" cy="328" r="4" fill="#E8C761" style="transition-delay:1.5s;"/>
-        <circle class="graph-dot" cx="440" cy="258" r="4.5" fill="#E8C761" style="transition-delay:1.6s;"/>
-        <circle class="graph-dot graph-dot-big" cx="505" cy="168" r="7.5" fill="#fff2c9" style="transition-delay:1.72s;"/>
-        <circle class="graph-dot graph-dot-big graph-dot-glow" cx="565" cy="68" r="8" fill="#fff8e6" filter="url(#glowFilter)" style="transition-delay:1.85s;"/>
-
-        <path class="arrow-head graph-arrow-glow" d="M565,68 L538,80 M565,68 L580,96" stroke="#fff2c9" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowFilter)" style="transition-delay:1.9s;"/>
-        <path class="arrow-head" d="M565,68 L538,80 M565,68 L580,96" stroke="#fff8e6" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="transition-delay:1.9s;"/>
-      </svg>
-    </div>
-
-    <div class="hero-trust-row hero-fade" style="transition-delay:.85s;">
-      <div class="htr-item htr-item-stars">
-        <div class="htr-text">
-          <span class="htr-stars">★★★★★</span>
-          <b>+ de 3.000 horas</b>
-          <span>de entrenamiento impartidas</span>
-        </div>
-      </div>
-      <div class="htr-item">
-        <div class="htr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><circle cx="11" cy="13" r="0.6" fill="currentColor"/><path d="M21 3l-7 7"/><path d="M16 3h5v5"/></svg></div>
-        <div class="htr-text">
-          <b>+ De 200 closers</b>
-          <span>entrenados</span>
-        </div>
-      </div>
-      <div class="htr-item">
-        <div class="htr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></div>
-        <div class="htr-text">
-          <b>Mentoría en vivo</b>
-          <span>y acompañamiento continuo</span>
-        </div>
-      </div>
-      <div class="htr-item">
-        <div class="htr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <div class="htr-text">
-          <b>Enfoque 100% práctico</b>
-          <span>basado en casos reales</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-bottom-tag hero-fade" style="transition-delay:1s;">
-      <span class="gold-shine">Formamos closers que generan resultados</span> en empresas de todo el mundo.
-    </div>
-  </div>
-</header>
 
 <section class="about-section" id="quienes-somos">
   <div class="gold-particles"></div>
@@ -1138,7 +1027,7 @@
 
 <script>
   // Scroll-reveal for sections and the salary chart
-  const revealTargets = document.querySelectorAll('section, header.hero');
+  const revealTargets = document.querySelectorAll('section');
   const chartWrap = document.getElementById('chart-wrap');
   let chartWrapTimeout = null;
   const io = new IntersectionObserver((entries)=>{
@@ -1159,6 +1048,15 @@
     });
   }, {threshold:0.2});
   revealTargets.forEach(s=> io.observe(s));
+
+  // Video VSL: sincronizar el ícono de play con el estado real
+  const vslVideo = document.getElementById('vsl-video');
+  const vslVideoWrap = document.getElementById('vsl-video-wrap');
+  if(vslVideo && vslVideoWrap){
+    vslVideo.addEventListener('play', ()=> vslVideoWrap.classList.add('playing'));
+    vslVideo.addEventListener('pause', ()=> vslVideoWrap.classList.remove('playing'));
+    vslVideo.addEventListener('ended', ()=> vslVideoWrap.classList.remove('playing'));
+  }
 
   // Video de testimonio: sincronizar el ícono de play con el estado real
   const duvanVideo = document.getElementById('duvan-video');
@@ -1240,7 +1138,7 @@
 
   // Navegación entre slides con el teclado
   const slides = [
-    document.querySelector('header.hero'),
+    document.getElementById('vsl'),
     document.getElementById('quienes-somos'),
     document.getElementById('logros'),
     document.getElementById('que-es-closer'),
@@ -1320,7 +1218,7 @@
     canvas.style.pointerEvents = 'none';
     const el = document.elementFromPoint(x, y);
     canvas.style.pointerEvents = 'auto';
-    const target = el ? el.closest('button, a[href], video, .testi-video') : null;
+    const target = el ? el.closest('button, a[href], video, .testi-video, .vsl-video-frame') : null;
     if(target !== hoverTarget){
       if(hoverTarget) hoverTarget.classList.remove('hover-sim');
       if(target) target.classList.add('hover-sim');
@@ -1353,7 +1251,7 @@
       canvas.style.pointerEvents = 'none';
       const el = document.elementFromPoint(p.x, p.y);
       canvas.style.pointerEvents = 'auto';
-      const clickable = el ? el.closest('button, a[href], video, .testi-video') : null;
+      const clickable = el ? el.closest('button, a[href], video, .testi-video, .vsl-video-frame') : null;
       if(clickable){
         const videoEl = clickable.tagName === 'VIDEO' ? clickable : clickable.querySelector('video');
         if(videoEl){
