@@ -441,14 +441,14 @@
     font-size:420px; line-height:1; color:var(--gold); opacity:0.06; pointer-events:none;
   }
   .testi-grid{
-    display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px; margin-top:16px;
-    align-items:start;
+    column-count:2; column-gap:16px; margin-top:16px;
   }
-  @media (max-width:860px){ .testi-grid{grid-template-columns:1fr;} }
+  @media (max-width:860px){ .testi-grid{column-count:1;} }
   .testi-card{
     background:var(--ink-2); border:1px solid var(--line); border-radius:14px; padding:14px;
     transition:border-color .2s ease, transform .2s ease;
-    max-width:460px; margin:0 auto; display:flex; flex-direction:column;
+    display:flex; flex-direction:column;
+    break-inside:avoid; margin-bottom:16px;
   }
   .testi-card:hover{border-color:var(--gold); transform:translateY(-3px);}
   .testi-card.testi-shot{padding:0; overflow:hidden; justify-content:flex-start;}
