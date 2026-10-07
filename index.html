@@ -537,7 +537,6 @@
   section.in{opacity:1; transform:none;}
 
   /* PIZARRA: siempre activa, trazo fino que se autoborra */
-  #draw-canvas{position:fixed; inset:0; z-index:40; pointer-events:auto; touch-action:none; cursor:default;}
 
   @media (max-width:760px){
     .ladder{height:280px;}
@@ -1023,8 +1022,6 @@
 
 <footer>Oscar Triana — Presentación de venta para uso en llamada.</footer>
 
-<canvas id="draw-canvas"></canvas>
-
 <script>
   // Scroll-reveal for sections and the salary chart
   const revealTargets = document.querySelectorAll('section');
@@ -1050,29 +1047,21 @@
   revealTargets.forEach(s=> io.observe(s));
 
   // Video VSL: sincronizar el ícono de play con el estado real
-  const vslVideo = document.getElementById('vsl-video');
-  const vslVideoWrap = document.getElementById('vsl-video-wrap');
-  if(vslVideo && vslVideoWrap){
-    vslVideo.addEventListener('play', ()=> vslVideoWrap.classList.add('playing'));
-    vslVideo.addEventListener('pause', ()=> vslVideoWrap.classList.remove('playing'));
-    vslVideo.addEventListener('ended', ()=> vslVideoWrap.classList.remove('playing'));
+  // Video: tocar/clicar la tarjeta reproduce o pausa, y el ícono de play refleja el estado real
+  function setupTapToPlayVideo(videoId, wrapId){
+    const video = document.getElementById(videoId);
+    const wrap = document.getElementById(wrapId);
+    if(!video || !wrap) return;
+    video.addEventListener('play', ()=> wrap.classList.add('playing'));
+    video.addEventListener('pause', ()=> wrap.classList.remove('playing'));
+    video.addEventListener('ended', ()=> wrap.classList.remove('playing'));
+    wrap.addEventListener('click', ()=>{
+      if(video.paused) video.play().catch(()=>{}); else video.pause();
+    });
   }
-
-  // Video de testimonio: sincronizar el ícono de play con el estado real
-  const duvanVideo = document.getElementById('duvan-video');
-  const duvanVideoWrap = document.getElementById('duvan-video-wrap');
-  if(duvanVideo && duvanVideoWrap){
-    duvanVideo.addEventListener('play', ()=> duvanVideoWrap.classList.add('playing'));
-    duvanVideo.addEventListener('pause', ()=> duvanVideoWrap.classList.remove('playing'));
-    duvanVideo.addEventListener('ended', ()=> duvanVideoWrap.classList.remove('playing'));
-  }
-  const yulieVideo = document.getElementById('yulie-video');
-  const yulieVideoWrap = document.getElementById('yulie-video-wrap');
-  if(yulieVideo && yulieVideoWrap){
-    yulieVideo.addEventListener('play', ()=> yulieVideoWrap.classList.add('playing'));
-    yulieVideo.addEventListener('pause', ()=> yulieVideoWrap.classList.remove('playing'));
-    yulieVideo.addEventListener('ended', ()=> yulieVideoWrap.classList.remove('playing'));
-  }
+  setupTapToPlayVideo('vsl-video', 'vsl-video-wrap');
+  setupTapToPlayVideo('duvan-video', 'duvan-video-wrap');
+  setupTapToPlayVideo('yulie-video', 'yulie-video-wrap');
 
   // Selector de moneda USD / COP
   const currencyBtns = document.querySelectorAll('.currency-btn');
@@ -1178,135 +1167,6 @@
     }
   });
 
-  // ---- Pizarra: trazo fino y sutil que se autoborra en ~2s, siempre activa, sin botones ----
-  const canvas = document.getElementById('draw-canvas');
-  const ctx = canvas.getContext('2d');
-  let strokes = []; // {points:[{x,y}], born:timestamp}
-  let currentStroke = null;
-  let downPoint = null;
-  const DRAG_THRESHOLD = 6; // px — por debajo de esto se considera un click, no un trazo
-  const LIFETIME = 1200; // ms antes de que un trazo empiece a desvanecer
-  const FADE = 800; // ms de desvanecido (total ≈ 2s)
-
-  function resize(){
-    canvas.width = window.innerWidth * devicePixelRatio;
-    canvas.height = window.innerHeight * devicePixelRatio;
-    canvas.style.width = window.innerWidth+'px';
-    canvas.style.height = window.innerHeight+'px';
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(devicePixelRatio, devicePixelRatio);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function pointerPos(e){
-    const t = e.touches ? e.touches[0] : e;
-    return {x:t.clientX, y:t.clientY};
-  }
-
-  let hoverTarget = null;
-  let isPaintingNow = false;
-  const CURSOR_IDLE = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='4' fill='%23C9A227'/%3E%3Ccircle cx='10' cy='10' r='8' fill='none' stroke='%23C9A227' stroke-width='1' opacity='0.5'/%3E%3C/svg%3E\") 10 10, auto";
-  const CURSOR_HOVER = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30'%3E%3Ccircle cx='15' cy='15' r='6' fill='%23C9A227' fill-opacity='0.35' stroke='%23E8C761' stroke-width='1.5'/%3E%3C/svg%3E\") 15 15, pointer";
-
-  function updateCursorAndHover(x, y){
-    if(isPaintingNow){
-      canvas.style.cursor = 'crosshair';
-      if(hoverTarget){ hoverTarget.classList.remove('hover-sim'); hoverTarget = null; }
-      return;
-    }
-    canvas.style.pointerEvents = 'none';
-    const el = document.elementFromPoint(x, y);
-    canvas.style.pointerEvents = 'auto';
-    const target = el ? el.closest('button, a[href], video, .testi-video, .vsl-video-frame') : null;
-    if(target !== hoverTarget){
-      if(hoverTarget) hoverTarget.classList.remove('hover-sim');
-      if(target) target.classList.add('hover-sim');
-      hoverTarget = target;
-    }
-    canvas.style.cursor = target ? CURSOR_HOVER : CURSOR_IDLE;
-  }
-
-  function startDraw(e){
-    downPoint = pointerPos(e);
-    currentStroke = {points:[downPoint], born: performance.now()};
-  }
-  function moveDraw(e){
-    if(!currentStroke) return;
-    const p = pointerPos(e);
-    // solo confirma el trazo como "pintura" una vez que se supera el umbral de arrastre
-    if(!strokes.includes(currentStroke)){
-      const dx = p.x - downPoint.x, dy = p.y - downPoint.y;
-      if(Math.hypot(dx,dy) > DRAG_THRESHOLD){
-        strokes.push(currentStroke);
-        isPaintingNow = true;
-      }
-    }
-    currentStroke.points.push(p);
-  }
-  function endDraw(e){
-    // si nunca se convirtió en trazo (fue un click simple), deja pasar la interacción al botón/enlace de abajo
-    if(currentStroke && !strokes.includes(currentStroke) && downPoint){
-      const p = downPoint;
-      canvas.style.pointerEvents = 'none';
-      const el = document.elementFromPoint(p.x, p.y);
-      canvas.style.pointerEvents = 'auto';
-      const clickable = el ? el.closest('button, a[href], video, .testi-video, .vsl-video-frame') : null;
-      if(clickable){
-        const videoEl = clickable.tagName === 'VIDEO' ? clickable : clickable.querySelector('video');
-        if(videoEl){
-          if(videoEl.paused) videoEl.play().catch(()=>{}); else videoEl.pause();
-        } else if(typeof clickable.click === 'function'){
-          clickable.click();
-        } else {
-          clickable.dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true}));
-        }
-      }
-    }
-    currentStroke = null;
-    downPoint = null;
-    isPaintingNow = false;
-  }
-
-  canvas.addEventListener('mousedown', startDraw);
-  canvas.addEventListener('mousemove', (e)=>{
-    moveDraw(e);
-    updateCursorAndHover(e.clientX, e.clientY);
-  });
-  canvas.addEventListener('mouseleave', ()=>{
-    if(hoverTarget){ hoverTarget.classList.remove('hover-sim'); hoverTarget = null; }
-  });
-  window.addEventListener('mouseup', endDraw);
-  canvas.addEventListener('touchstart', (e)=>{ startDraw(e); }, {passive:true});
-  canvas.addEventListener('touchmove', (e)=>{ moveDraw(e); }, {passive:true});
-  canvas.addEventListener('touchend', endDraw);
-
-  function loop(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    const now = performance.now();
-    strokes = strokes.filter(s => now - s.born < LIFETIME + FADE);
-    strokes.forEach(s=>{
-      const age = now - s.born;
-      let alpha = 0.8;
-      if(age > LIFETIME){ alpha = 0.8 * (1 - (age - LIFETIME)/FADE); }
-      if(s.points.length < 2) return;
-      ctx.save();
-      ctx.globalAlpha = Math.max(alpha, 0);
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--draw');
-      ctx.lineWidth = 2.5;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.shadowColor = 'rgba(240,212,138,0.45)';
-      ctx.shadowBlur = 5;
-      ctx.beginPath();
-      ctx.moveTo(s.points[0].x, s.points[0].y);
-      for(let i=1;i<s.points.length;i++){ ctx.lineTo(s.points[i].x, s.points[i].y); }
-      ctx.stroke();
-      ctx.restore();
-    });
-    requestAnimationFrame(loop);
-  }
-  loop();
 </script>
 
 </body>
